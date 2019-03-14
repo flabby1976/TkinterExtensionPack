@@ -11,7 +11,7 @@ setuptools.setup(
     description="Useful tkinter extensions",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/flabby1976/tkinter-extension-pack",
+    url="https://github.com/flabby1976/tkinter_extension_pack",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python",
