@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="tkinter-extension-pack",
+    name="tkinter_extension_pack",
     version="0.0.1",
     author="Andrew Robinson",
     author_email="flabby1976@gmail.com",

@@ -1,1 +1,0 @@
-name = "tkinter-extension-pack"
