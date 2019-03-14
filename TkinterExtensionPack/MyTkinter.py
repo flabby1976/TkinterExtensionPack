@@ -1,25 +1,23 @@
+##    My module of tkinter based stuff
 ##
-##    This file is part of tkinter-extension-pack
-##    Copyright (C) 2017,2018 Andrew Robinson
+##    This file is part of TkinterExtensionPack
+##    Copyright (C) 2017,2018, 2019 Andrew Robinson
 ##
-##    tkinter-extension-pack is free software: you can redistribute it and/or modify
+##    TkinterExtensionPack is free software: you can redistribute it and/or modify
 ##    it under the terms of the GNU General Public License as published by
 ##    the Free Software Foundation, either version 3 of the License, or
 ##    (at your option) any later version.
 ##
-##    tkinter-extension-pack is distributed in the hope that it will be useful,
+##    TkinterExtensionPack is distributed in the hope that it will be useful,
 ##    but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##    GNU General Public License for more details.
 ##
 ##    You should have received a copy of the GNU General Public License
-##    along with tkinter-extension-pack.  If not, see <https://www.gnu.org/licenses/>.
-##
-## My module of tkinter based stuff
+##    along with TkinterExtensionPack.  If not, see <https://www.gnu.org/licenses/>.
 ##
 from __future__ import division
 
-# For the GUI
 from Tkinter import *
 
 import logging
@@ -376,6 +374,10 @@ class WidgetLogger(logging.Handler):
 if __name__ == "__main__":
 
     import random
+    import logging
+    import sys
+
+    logging.basicConfig(level=logging.DEBUG)
 
     root = Tk()
 
