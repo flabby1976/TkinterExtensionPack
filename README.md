@@ -1,2 +1,2 @@
-# tkinter-extension-pack
+# TkinterExtensionPack
 Useful tkinter extensions
