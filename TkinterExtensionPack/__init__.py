@@ -1,1 +1,1 @@
-name = "TkinterExtensionPack"
+from MyTkinter import MyDialog, MyCanvas, WidgetLogger
