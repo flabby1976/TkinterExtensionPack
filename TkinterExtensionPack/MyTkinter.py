@@ -21,6 +21,7 @@ from __future__ import division
 from Tkinter import *
 
 import logging
+log = logging.getLogger(__name__)
 
 # Class for pop-up dialog boxes
 # from http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
@@ -124,8 +125,6 @@ class MyCanvas(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
 
-        self.log = logging.getLogger(self.__class__.__name__)
-        
         self.parent=parent
         
         self.canvas = Canvas(self, width=400, height=400, background="bisque", closeenough=5)
@@ -217,18 +216,18 @@ class MyCanvas(Frame):
         self.canvas.config(cursor="") 
 
     def shift_select_start(self, event):
-        self.log.debug("Starting Selection")
+        log.debug("Starting Selection")
         self.selectlist.extend(self.canvas.find_withtag(CURRENT))
-        self.log.debug(self.selectlist)
+        log.debug(self.selectlist)
         self.select_mark=(self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
         (x0,y0)=self.select_mark
         self.selectbox = self.canvas.create_rectangle(x0,y0,self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
 
     def select_start(self, event):
         self.selectlist=[]
-        self.log.debug("Starting Selection")
+        log.debug("Starting Selection")
         self.selectlist.extend(self.canvas.find_withtag(CURRENT))
-        self.log.debug(self.selectlist)
+        log.debug(self.selectlist)
         self.select_mark=(self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
         (x0,y0)=self.select_mark
         self.selectbox = self.canvas.create_rectangle(x0,y0,self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
@@ -238,13 +237,13 @@ class MyCanvas(Frame):
         self.canvas.coords(self.selectbox, x0,y0,self.canvas.canvasx(event.x), self.canvas.canvasy(event.y))
         
     def select_stop(self, event):
-        self.log.debug("Finished Selection")
+        log.debug("Finished Selection")
         a=self.canvas.coords(self.selectbox)
         if not a == []:
             (x0,y0,x1,y1) = self.canvas.coords(self.selectbox)
             self.selectlist.extend(self.canvas.find_enclosed(x0,y0,x1,y1))
             self.canvas.delete(self.selectbox)
-        self.log.debug(self.selectlist)
+        log.debug(self.selectlist)
         self.event_generate("<<Selection_Change>>")
 
     def zoomer(self,event):
@@ -375,6 +374,7 @@ class WidgetLogger(logging.Handler):
 if __name__ == "__main__":
 
     import random
+    import logging
     import sys
 
     logging.basicConfig(level=logging.DEBUG)
