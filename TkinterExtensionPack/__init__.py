@@ -1,1 +1,1 @@
-from MyTkinter import MyDialog, MyCanvas, WidgetLogger
+from MyTkinter import MyDialog, MyTable, MyCanvas, WidgetLogger
