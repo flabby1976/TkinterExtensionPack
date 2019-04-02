@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="TkinterExtensionPack",
-    version="0.0.1+dev",
+    version="0.0.2",
     author="Andrew Robinson",
     author_email="flabby1976@gmail.com",
     description="Useful tkinter extensions",
