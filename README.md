@@ -1,7 +1,13 @@
 # TkinterExtensionPack
 
-Useful tkinter extensions
+Useful tkinter extensions -
+* MyDialog
+* MyTable
+* OptFrame
+* ParamsWindow
+* WidgetLogger
+* MyCanvas
 
-In local working copy (that contains setup.py) -
+To install, in local working copy (that contains setup.py) -
 
 `pip install -e .`
