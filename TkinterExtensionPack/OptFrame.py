@@ -12,7 +12,9 @@ class OptFrame(Frame):
 
         def _OnSelChange(name, index, mode):
             sel = selected.get()
+            log.debug(sel)
             pars = conf[sel]
+            log.debug(pars)
 
             for par in self.paras:
                 self.ents[par].delete(0, END)
