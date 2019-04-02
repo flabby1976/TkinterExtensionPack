@@ -151,7 +151,7 @@ class MyTable(Toplevel):
                 self.result[item][head]=val                      
 
 if __name__ == "__main__":
-
+    import tkMessageBox
     logging.basicConfig(level=logging.DEBUG)
 
     root=Tk()
