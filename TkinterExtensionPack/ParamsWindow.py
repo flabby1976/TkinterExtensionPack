@@ -7,29 +7,27 @@ log = logging.getLogger(__name__)
 
 class ParamsWindow(MyDialog):
 
-    def __init__(self, master, R, title=None, cols=1):
-        self.R=R
+    def __init__(self, master, params, title=None, cols=1):
+        self.params=params
         self.cols=cols
         MyDialog.__init__(self, master, title)
 
     def body(self, root):
 
-        print
-
-        params=len(self.R)
-        rpc = params // self.cols
+        Nparams=len(self.params)
+        params_per_col = Nparams // self.cols
 
         self.ents={}
-        for n, param in enumerate(self.R):
-            w = OptFrame(root, self.R[param], title=str(param))
-            w.grid(row=n % rpc, column= n // rpc, padx = 2, pady = 2, sticky = N)
+        for n, param in enumerate(self.params):
+            w = OptFrame(root, self.params[param], title=str(param))
+            w.grid(row=n % params_per_col, column= n // params_per_col, padx = 2, pady = 2, sticky = N)
             self.ents[param]=w
         return
 
     def applyit(self):
 
         self.result={}
-        for n, param in enumerate(self.R):
+        for n, param in enumerate(self.params):
             self.result[param] = self.ents[param].get()
             
 

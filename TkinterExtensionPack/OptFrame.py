@@ -12,9 +12,7 @@ class OptFrame(Frame):
 
         def _OnSelChange(name, index, mode):
             sel = selected.get()
-            log.debug(sel)
             pars = conf[sel]
-            log.debug(pars)
 
             for par in self.paras:
                 self.ents[par].delete(0, END)
@@ -32,9 +30,6 @@ class OptFrame(Frame):
             for para in conf[opt]:
                 if not para in self.paras:
                     self.paras.append(para)
-
-##        log.debug(opts)
-##        log.debug(self.paras)
 
         selected = StringVar(chooser)
         selected.trace("w", _OnSelChange)
