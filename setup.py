@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="TkinterExtensionPack",
-    version="0.0.2+dev",
+    version="0.0.3",
     author="Andrew Robinson",
     author_email="flabby1976@gmail.com",
     description="Useful tkinter extensions",
@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python",
-        "License :: OSI Approved :: GNU GENERAL PUBLIC LICENSE V3 OR LATER (GPLV3+)",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
 )
