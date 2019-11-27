@@ -13,8 +13,6 @@ class OptFrame(Frame):
 
         conf['Custom'] = {}
 
-        # print conf
-
         self.default = default
 
         def _on_sel_change(*_):
@@ -28,8 +26,10 @@ class OptFrame(Frame):
                     self.ents[par].delete(0, END)
 
             if not sel == 'Custom':
+                self.types = {}
                 for par in pars:
                     self.ents[par].insert(0, pars[par])
+                    self.types[par] = type(pars[par])
                     self.ents[par].config(state='readonly')
 
         chooser = Frame(self)
@@ -50,6 +50,7 @@ class OptFrame(Frame):
         OptionMenu(chooser, self.selected, *opts).grid(row=1, column=2, padx=2, pady=2, sticky=W)
 
         self.ents = {}
+        self.types = {}
         for grid_row, para in enumerate(self.paras):
             Label(chooser, text=str(para), anchor=E).grid(row=grid_row + 2, column=1, padx=2, pady=2, sticky=E)
             e = Entry(chooser)
@@ -63,14 +64,24 @@ class OptFrame(Frame):
             if default[0] == "Custom":
                 for para in default[1]:
                     e = self.ents[para]
+                    v = default[1][para]
                     e.delete(0, END)
-                    e.insert(0, default[1][para])
+                    e.insert(0, v)
+                    self.types[para] = type(v)
 
     def get(self):
 
         vals = {}
         for para in self.paras:
-            vals[para] = self.ents[para].get()
+            v = self.ents[para].get()
+            if self.types[para]:
+                if self.types[para] == int:
+                    vals[para] = int(v)
+                    continue
+                if self.types[para] == float:
+                    vals[para] = float(v)
+                    continue
+                vals[para] = v
 
         return vals
 
@@ -79,7 +90,15 @@ class OptFrame(Frame):
         vals = {}
         if self.selected.get() == "Custom":
             for para in self.paras:
-                vals[para] = self.ents[para].get()
+                v = self.ents[para].get()
+                if self.types[para]:
+                    if self.types[para] == int:
+                        vals[para] = int(v)
+                        continue
+                    if self.types[para] == float:
+                        vals[para] = float(v)
+                        continue
+                    vals[para] = v
 
         return self.selected.get(), vals
 
