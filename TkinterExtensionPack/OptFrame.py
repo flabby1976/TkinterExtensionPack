@@ -7,81 +7,97 @@ log = logging.getLogger(__name__)
 
 class OptFrame(Frame):
 
-    def __init__(self, parent, conf, title=None, default=None):
+    def __init__(self, parent, choices, title=None, default=None):
 
         Frame.__init__(self, parent)
 
-        conf['Custom'] = {}
+        choices['Custom'] = {}
 
         self.default = default
 
         def _on_sel_change(*_):
 
             sel = self.selected.get()
-            pars = conf[sel]
+            selected_choice = choices[sel]
 
-            for par in self.paras:
-                self.ents[par].config(state=NORMAL)
+            for my_parameter in self.all_parameters:
+                self.ents[my_parameter].config(state=NORMAL)
                 if not sel == 'Custom':
-                    self.ents[par].delete(0, END)
+                    self.ents[my_parameter].delete(0, END)
 
             if not sel == 'Custom':
                 self.types = {}
-                for par in pars:
-                    self.ents[par].insert(0, pars[par])
-                    self.types[par] = type(pars[par])
-                    self.ents[par].config(state='readonly')
+                for my_parameter in selected_choice:
+                    self.ents[my_parameter].insert(0, selected_choice[my_parameter])
+                    self.types[my_parameter] = type(selected_choice[my_parameter])
+                    self.ents[my_parameter].config(state='readonly')
 
         chooser = Frame(self)
         chooser.pack()
 
-        opts = []
-        self.paras = []
-        for opt in conf:
-            opts.append(opt)
-            for para in conf[opt]:
-                if para not in self.paras:
-                    self.paras.append(para)
+        selectable_options = []
+        self.all_parameters = []
+        for choice in choices:
+            selectable_options.append(choice)
+            for parameter in choices[choice]:
+                if parameter not in self.all_parameters:
+                    self.all_parameters.append(parameter)
 
         self.selected = StringVar(chooser)
         self.selected.trace("w", _on_sel_change)
 
         Label(chooser, text=title, font="bold", bg="grey").grid(row=1, column=1, sticky=E)
-        OptionMenu(chooser, self.selected, *opts).grid(row=1, column=2, padx=2, pady=2, sticky=W)
+        OptionMenu(chooser, self.selected, *selectable_options).grid(row=1, column=2, padx=2, pady=2, sticky=W)
 
         self.ents = {}
         self.types = {}
-        for grid_row, para in enumerate(self.paras):
-            Label(chooser, text=str(para), anchor=E).grid(row=grid_row + 2, column=1, padx=2, pady=2, sticky=E)
+        for grid_row, parameter in enumerate(self.all_parameters):
+            Label(chooser, text=str(parameter), anchor=E).grid(row=grid_row + 2, column=1, padx=2, pady=2, sticky=E)
             e = Entry(chooser)
             e.config(state='readonly')
             e.grid(row=grid_row + 2, column=2, padx=2, pady=2, sticky=W)
-            self.ents[para] = e
+            self.ents[parameter] = e
 
-        self.selected.set(opts[0])  # initial value
+        self.selected.set(selectable_options[0])  # initial value if we weren't given a default
         if default:
-            self.selected.set(default[0])  # initial value
-            if default[0] == "Custom":
-                for para in default[1]:
-                    e = self.ents[para]
-                    v = default[1][para]
+            found = False
+            for test in choices:
+                if not test == 'Custom':
+                    mismatch = False
+                    for par in choices[test]:
+                        if not choices[test][par] == default[par]:
+                            mismatch = True
+                            break  # stop looking at this test in choices
+                    if mismatch:
+                        continue  # go to next test in choices
+                    else:
+                        self.selected.set(test)  # if all par in choices[test] matched then this is the default
+                        found = True
+                        break  # if found stop looking through tests in choices
+
+            if not found:  # if not found after going through all selectable_options, must be 'Custom'
+                for parameter in default:
+                    e = self.ents[parameter]
+                    v = default[parameter]
+                    e.config(state=NORMAL)
                     e.delete(0, END)
                     e.insert(0, v)
-                    self.types[para] = type(v)
+                    self.types[parameter] = type(v)
+                self.selected.set('Custom')
 
     def get(self):
 
         vals = {}
-        for para in self.paras:
-            v = self.ents[para].get()
-            if self.types[para]:
-                if self.types[para] == int:
-                    vals[para] = int(v)
+        for parameter in self.all_parameters:
+            v = self.ents[parameter].get()
+            if self.types[parameter]:
+                if self.types[parameter] == int:
+                    vals[parameter] = int(v)
                     continue
-                if self.types[para] == float:
-                    vals[para] = float(v)
+                if self.types[parameter] == float:
+                    vals[parameter] = float(v)
                     continue
-                vals[para] = v
+                vals[parameter] = v
 
         return vals
 
@@ -89,16 +105,16 @@ class OptFrame(Frame):
 
         vals = {}
         if self.selected.get() == "Custom":
-            for para in self.paras:
-                v = self.ents[para].get()
-                if self.types[para]:
-                    if self.types[para] == int:
-                        vals[para] = int(v)
+            for parameter in self.all_parameters:
+                v = self.ents[parameter].get()
+                if self.types[parameter]:
+                    if self.types[parameter] == int:
+                        vals[parameter] = int(v)
                         continue
-                    if self.types[para] == float:
-                        vals[para] = float(v)
+                    if self.types[parameter] == float:
+                        vals[parameter] = float(v)
                         continue
-                    vals[para] = v
+                    vals[parameter] = v
 
         return self.selected.get(), vals
 
@@ -109,13 +125,13 @@ if __name__ == "__main__":
 
     root = Tk()
 
-    choices = {
+    my_choices = {
         u'QPSK': {u'OSNR target (dB/0.1nm)': 15, u'Bit Rate (Gb/s)': 100, u'Format': u'QPSK'},
         u'8QAM': {u'OSNR target (dB/0.1nm)': 20.5, u'Bit Rate (Gb/s)': 150, u'Format': u'8QAM'},
         u'16QAM': {u'OSNR target (dB/0.1nm)': 25, u'Bit Rate (Gb/s)': 200, u'Format': u'16QAM'}
         }
 
-    w = OptFrame(root, choices, title="Modulation")
+    w = OptFrame(root, my_choices, title="Modulation")
     w.pack()
 
     mainloop()

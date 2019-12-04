@@ -41,7 +41,7 @@ class ParamsWindow(MyDialog):
 
         self.result = {}
         self.choice = {}
-        for n, param in enumerate(self.params):
+        for param in self.params:
             self.result[param] = self.ents[param].get()
             self.choice[param] = self.ents[param].choice()
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
         print p
         print json.dumps(w1.result[p], indent=4)
 
-    w1 = ParamsWindow(roots, parameters, cols=2, defaults=w1.choice)
+    w1 = ParamsWindow(roots, parameters, cols=2, defaults=w1.result)
 
     print w1.choice
 
