@@ -1,4 +1,4 @@
-from Tkinter import *
+from tkinter import *
 
 import logging
 
@@ -126,9 +126,9 @@ if __name__ == "__main__":
     root = Tk()
 
     my_choices = {
-        u'QPSK': {u'OSNR target (dB/0.1nm)': 15, u'Bit Rate (Gb/s)': 100, u'Format': u'QPSK'},
-        u'8QAM': {u'OSNR target (dB/0.1nm)': 20.5, u'Bit Rate (Gb/s)': 150, u'Format': u'8QAM'},
-        u'16QAM': {u'OSNR target (dB/0.1nm)': 25, u'Bit Rate (Gb/s)': 200, u'Format': u'16QAM'}
+        'QPSK': {'OSNR target (dB/0.1nm)': 15, 'Bit Rate (Gb/s)': 100, 'Format': 'QPSK'},
+        '8QAM': {'OSNR target (dB/0.1nm)': 20.5, 'Bit Rate (Gb/s)': 150, 'Format': '8QAM'},
+        '16QAM': {'OSNR target (dB/0.1nm)': 25, 'Bit Rate (Gb/s)': 200, 'Format': '16QAM'}
         }
 
     w = OptFrame(root, my_choices, title="Modulation")

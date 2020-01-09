@@ -16,9 +16,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with TkinterExtensionPack.  If not, see <https://www.gnu.org/licenses/>.
 #
-from __future__ import division
 
-from Tkinter import *
+
+from tkinter import *
 
 import logging
 
@@ -72,14 +72,16 @@ class MyCanvas(Frame):
 
         self.clear()
 
-    def trans(self, (x, y)):
+    def trans(self, xxx_todo_changeme):
         """ Transform from 'real' coords to 'canvas' coords """
+        (x, y) = xxx_todo_changeme
         x2 = x * self.xscale + self.xoffset
         y2 = -y * self.yscale + self.yoffset
         return x2, y2
 
-    def rtrans(self, (x, y)):
+    def rtrans(self, xxx_todo_changeme1):
         """ Transform from 'canvas' coords to 'real' coords """
+        (x, y) = xxx_todo_changeme1
         x2 = (x - self.xoffset) / self.xscale
         y2 = -(y - self.yoffset) / self.yscale
         return x2, y2
@@ -294,7 +296,7 @@ if __name__ == "__main__":
         xb = xa + random.randint(minsize, maxsize)
         yb = ya + random.randint(minsize, maxsize)
 
-        print n, ": ", xa, ya, xb, yb
+        print(n, ": ", xa, ya, xb, yb)
 
         color = ('red', 'orange', 'yellow', 'green', 'blue')[random.randint(0, 4)]
         GUI.create_rectangle(xa, ya, xb, yb, outline='black', fill=color,
@@ -308,7 +310,7 @@ if __name__ == "__main__":
         xb = xa + random.randint(minsize, maxsize)
         yb = ya + random.randint(minsize, maxsize)
 
-        print n, ": ", xa, ya, xb, yb
+        print(n, ": ", xa, ya, xb, yb)
 
         color = ('red', 'orange', 'yellow', 'green', 'blue')[random.randint(0, 4)]
         GUI.create_rectangle(xa, ya, xb, yb, outline='black', fill=color,

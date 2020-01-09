@@ -1,31 +1,32 @@
-##    My module of tkinter based stuff
-##
-##    This file is part of TkinterExtensionPack
-##    Copyright (C) 2017,2018, 2019 Andrew Robinson
-##
-##    TkinterExtensionPack is free software: you can redistribute it and/or modify
-##    it under the terms of the GNU General Public License as published by
-##    the Free Software Foundation, either version 3 of the License, or
-##    (at your option) any later version.
-##
-##    TkinterExtensionPack is distributed in the hope that it will be useful,
-##    but WITHOUT ANY WARRANTY; without even the implied warranty of
-##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-##    GNU General Public License for more details.
-##
-##    You should have received a copy of the GNU General Public License
-##    along with TkinterExtensionPack.  If not, see <https://www.gnu.org/licenses/>.
-##
-from __future__ import division
+#    My module of tkinter based stuff
+#
+#    This file is part of TkinterExtensionPack
+#    Copyright (C) 2017,2018, 2019 Andrew Robinson
+#
+#    TkinterExtensionPack is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    TkinterExtensionPack is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with TkinterExtensionPack.  If not, see <https://www.gnu.org/licenses/>.
+#
 
-from Tkinter import *
+
+from tkinter import *
 
 import logging
 log = logging.getLogger(__name__)
 
+
 class MyTable(Toplevel):
 
-    def __init__(self, parent, rows, cols, title = None, initial_values=None, col_width=None):
+    def __init__(self, parent, rows, cols, title=None, initial_values=None, col_width=None):
 
         Toplevel.__init__(self, parent)
         self.transient(parent)
@@ -43,6 +44,7 @@ class MyTable(Toplevel):
         self.initial_values = initial_values
 
         self.result = None
+        self.ents = {}
 
         body = Frame(self)
         self.initial_focus = self.body(body)
@@ -64,22 +66,21 @@ class MyTable(Toplevel):
 
         self.wait_window(self)
 
-
     def body(self, master):
 
         for grid_col, head in enumerate(self.cols):
-            Label(master, text=head).grid(row=0,column=grid_col+2)
+            Label(master, text=head).grid(row=0, column=grid_col+2)
 
-        self.ents={}
+        self.ents = {}
         for grid_row, item in enumerate(self.rows):
             sroot = str(item)
-            l = Label(master, text = sroot, anchor=E)
-            l.grid(row = grid_row+1, column = 1, padx = 2, pady = 2, sticky = E)
-            self.ents[item]={}
+            la = Label(master, text=sroot, anchor=E)
+            la.grid(row=grid_row+1, column=1, padx=2, pady=2, sticky=E)
+            self.ents[item] = {}
             for grid_col, head in enumerate(self.cols):
                 e = Entry(master, width=self.col_width)
-                e.grid(row = grid_row+1, column = grid_col+2, padx = 2, pady = 2, sticky = W)
-                self.ents[item][head]=e
+                e.grid(row=grid_row+1, column=grid_col+2, padx=2, pady=2, sticky=W)
+                self.ents[item][head] = e
 
         if self.initial_values:
             for row in self.initial_values:
@@ -92,7 +93,7 @@ class MyTable(Toplevel):
                 else:
                     log.warning("Warning: initial_value key '%s' not found in %s" % (row, self.rows))
 
-        return 
+        return master
 
     def buttonbox(self):
         # add standard button box. override if you don't want the
@@ -114,9 +115,10 @@ class MyTable(Toplevel):
     # standard button semantics
 
     def ok(self, event=None):
+        _ = event
 
         if not self.validate():
-            self.initial_focus.focus_set() # put focus back
+            self.initial_focus.focus_set()  # put focus back
             return
 
         self.withdraw()
@@ -127,7 +129,7 @@ class MyTable(Toplevel):
         self.cancel()
 
     def cancel(self, event=None):
-
+        _ = event
         # put focus back to the parent window
         self.parent.focus_set()
         self.destroy()
@@ -135,28 +137,28 @@ class MyTable(Toplevel):
     #
     # command hooks
 
-    def validate(self):
+    @staticmethod
+    def validate():
         # Override if need to validate inputs before apply to result
-
         return 1
-
 
     def applyit(self):
 
-        self.result={}
+        self.result = {}
         for item in self.rows:
-            self.result[item]={}
+            self.result[item] = {}
             for head in self.cols:
                 val = self.ents[item][head].get()
-                self.result[item][head]=val                      
+                self.result[item][head] = val
+
 
 if __name__ == "__main__":
-    import tkMessageBox
+    import tkinter.messagebox
     logging.basicConfig(level=logging.DEBUG)
 
-    root=Tk()
+    root = Tk()
 
-    class popupWindow(MyTable):
+    class PopupWindow(MyTable):
 
         def validate(self):
             for item in self.rows:
@@ -164,9 +166,9 @@ if __name__ == "__main__":
                     val = self.ents[item][head].get()
                     if not val == "":
                         try:
-                            valf = float(val)
+                            val = float(val)
                         except ValueError:
-                            tkMessageBox.showwarning(
+                            tkinter.messagebox.showwarning(
                                 "Bad input",
                                 "Illegal value:\n '%s' '%s' '%s'\n Please try again" % (item, head, val)
                             )
@@ -174,13 +176,13 @@ if __name__ == "__main__":
             return 1
             
 
-    cols = ["dB", "dB/km"]
-    rows = ["LW", "LWP", "SA"]
+    zcols = ["dB", "dB/km"]
+    zrows = ["LW", "LWP", "SA"]
 
-    init = { u'DA': {'dB/km': 0.183}, u'SA': {'dB/km': 0.183}, u'LWP': {'dB/km': 0.183}, u'LW': {'dB/km': 0.183}}
+    init = {'DA': {'dB/km': 0.183}, 'SA': {'dB/km': 0.183}, 'LWP': {'dB/km': 0.183}, 'LW': {'dB/km': 0.183}}
 
-    w = popupWindow(root, rows, cols, initial_values = init, title = "Set losses", col_width=5)
+    zw = PopupWindow(root, zrows, zcols, initial_values=init, title="Set losses", col_width=5)
 
-    log.debug("Result: %s" % w.result)
+    log.debug("Result: %s" % zw.result)
 
     mainloop()
